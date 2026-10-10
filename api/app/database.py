@@ -101,8 +101,16 @@ WHERE NOT EXISTS (SELECT 1 FROM experimento WHERE id_experimento = 1);
 """
 
 
+class ClosingConnection(sqlite3.Connection):
+    def __exit__(self, exc_type, exc_value, traceback):
+        try:
+            return super().__exit__(exc_type, exc_value, traceback)
+        finally:
+            self.close()
+
+
 def connect() -> sqlite3.Connection:
-    conn = sqlite3.connect(DB_PATH, timeout=10)
+    conn = sqlite3.connect(DB_PATH, timeout=10, factory=ClosingConnection)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
     return conn
@@ -161,8 +169,8 @@ def init_db() -> None:
         conn.execute("PRAGMA journal_mode = WAL")
         # FKs desligadas so durante a migracao (recriacao da tabela experimento)
         conn.execute("PRAGMA foreign_keys = OFF")
-        with conn:
-            _migrar(conn)
+        _migrar(conn)
+        conn.commit()
         conn.execute("PRAGMA foreign_keys = ON")
         conn.executescript(SCHEMA)
         conn.executescript(SEED)

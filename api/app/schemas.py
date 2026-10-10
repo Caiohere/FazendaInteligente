@@ -79,6 +79,13 @@ class ExperimentoOut(BaseModel):
     data_fim: Optional[str]
 
 
+class ExperimentoIn(BaseModel):
+    nome: str = Field(min_length=1, max_length=100)
+    id_cultura: int = Field(ge=1)
+    area_m2: Optional[float] = Field(default=None, gt=0)
+    data_inicio: date
+
+
 class ExperimentoPatch(BaseModel):
     nome: Optional[str] = Field(default=None, min_length=1)
     id_cultura: Optional[int] = Field(default=None, ge=1)
