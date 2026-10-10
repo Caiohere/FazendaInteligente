@@ -24,7 +24,8 @@ def iso_utc(v: Optional[datetime]) -> str:
 # ---------------- Leitura ----------------
 
 class LeituraIn(BaseModel):
-    id_experimento: int = Field(default=1, ge=1)
+    # Omitido: a API usa o experimento ativo do sensor (o mais recente sem data_fim)
+    id_experimento: Optional[int] = Field(default=None, ge=1)
     timestamp: Optional[UtcDatetime] = None
     temperatura: float = Field(ge=-10, le=80)
     umidade: float = Field(ge=0, le=100)

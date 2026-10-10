@@ -26,12 +26,24 @@ def _filtro(id_experimento: int, inicio: Optional[datetime], fim: Optional[datet
     return " AND ".join(where), params
 
 
+def _experimento_ativo(conn) -> int:
+    """Experimento que recebe as leituras do sensor quando ele nao informa o id:
+    o mais recente sem data_fim (ou, se todos encerraram, o mais recente)."""
+    row = conn.execute(
+        "SELECT id_experimento FROM experimento "
+        "ORDER BY (data_fim IS NULL) DESC, id_experimento DESC LIMIT 1"
+    ).fetchone()
+    return row["id_experimento"] if row else 1
+
+
 @router.post("", response_model=LeituraOut, status_code=status.HTTP_201_CREATED)
 def criar_leitura(leitura: LeituraIn) -> LeituraOut:
     """RF02/RF03 - recebe a leitura do ESP32 e persiste com timestamp UTC."""
     ts = iso_utc(leitura.timestamp)
     try:
         with connect() as conn:
+            if leitura.id_experimento is None:
+                leitura.id_experimento = _experimento_ativo(conn)
             cur = conn.execute(
                 """
                 INSERT INTO leitura
