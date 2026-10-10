@@ -1,12 +1,16 @@
-# Versionado: somente api/ e dashboard/
+# Versionado: somente api/, dashboard/ e o firmware do ESP32
 /*
 !/api/
 !/dashboard/
+!/firmware/
+/firmware/*
+!/firmware/fazenda_esp32/
 !/.gitignore
 
 # Segredos
 .env
 dashboard/.streamlit/secrets.toml
+firmware/fazenda_esp32/secrets.h
 
 # Banco e cache
 *.db
