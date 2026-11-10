@@ -1,4 +1,4 @@
-"""Dashboard FazendaInteligente (Streamlit) - RF05, RF06, RF07, RF08, RNF02, RNF05, AL10, AL11."""
+"""Dashboard PlantCare AI (Streamlit) - RF05, RF06, RF07, RF08, RNF02, RNF05, AL10, AL11."""
 from datetime import datetime, timedelta, timezone
 
 import pandas as pd
@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 # Precisa ser o primeiro comando Streamlit - antes do import de `api`, que le st.secrets
-st.set_page_config(page_title="FazendaInteligente", page_icon="🌱", layout="wide")
+st.set_page_config(page_title="PlantCare AI", page_icon="🌱", layout="wide")
 
 import api  # noqa: E402
 
@@ -75,7 +75,7 @@ umidade_min = cultura["umidade_min"] if cultura else None
 
 # Titulo proprio: o st.title nao cabe em uma linha no celular (RNF05)
 st.markdown('<div style="font-size:clamp(1.5rem,7vw,2.5rem);font-weight:700;line-height:1.2;'
-            'margin:0.5rem 0">🌱 FazendaInteligente</div>', unsafe_allow_html=True)
+            'margin:0.5rem 0">🌱 PlantCare AI</div>', unsafe_allow_html=True)
 st.caption(
     f"{experimento['nome']} · Cultura: {cultura['nome'] if cultura else 'não definida'} · "
     f"Início: {pd.Timestamp(experimento['data_inicio']).strftime('%d/%m/%Y')} · Horários de Brasília"

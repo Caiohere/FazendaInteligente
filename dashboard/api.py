@@ -1,4 +1,4 @@
-"""Cliente da API FazendaInteligente (o dashboard so fala com o backend via REST - Figura 1)."""
+"""Cliente da API PlantCare AI (o dashboard so fala com o backend via REST - Figura 1)."""
 import os
 from pathlib import Path
 from typing import Any, Optional
